@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(120deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+        padding: 50px;
+    }
+    .container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 15px;
+        width: 350px;
+        margin: auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    select, input, button {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    button {
+        background: #ff9800;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #e68900;
+    }
+    .result {
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💱 Currency Converter</h1>
+    <select id="conversionType">
+        <option value="INR_AUD">INR to AUD</option>
+        <option value="AUD_INR">AUD to INR</option>
+        <option value="INR_YEN">INR to YEN</option>
+        <option value="YEN_INR">YEN to INR</option>
+        <option value="AUD_YEN">AUD to YEN</option>
+        <option value="YEN_AUD">YEN to AUD</option>
+    </select>
+    <input type="number" id="amount" placeholder="Enter amount" step="0.01">
+    <button onclick="convertCurrency()">Convert</button>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function convertCurrency() {
+        let amount = parseFloat(document.getElementById("amount").value);
+        let type = document.getElementById("conversionType").value;
+        let resultText = "";
+        
+        if (isNaN(amount) || amount <= 0) {
+            resultText = "⚠ Please enter a valid amount!";
+        } else {
+            switch (type) {
+                case "INR_AUD":
+                    resultText = `$${(amount / 56.91).toFixed(2)} AUD`;
+                    break;
+                case "AUD_INR":
+                    resultText = `${(amount * 56.91).toFixed(2)} INR`;
+                    break;
+                case "INR_YEN":
+                    resultText = `${(amount * 1.69).toFixed(2)} YEN`;
+                    break;
+                case "YEN_INR":
+                    resultText = `${(amount / 1.69).toFixed(2)} INR`;
+                    break;
+                case "AUD_YEN":
+                    resultText = `${(amount * 96.37).toFixed(2)} YEN`;
+                    break;
+                case "YEN_AUD":
+                    resultText = `$${(amount / 96.37).toFixed(2)} AUD`;
+                    break;
+            }
+        }
+        document.getElementById("result").innerText = resultText;
+    }
+</script>
+
+</body>
+</html>

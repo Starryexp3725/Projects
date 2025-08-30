@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Streaker</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: #fff;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ffdd57;
+    }
+    .quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+    }
+    .streak {
+      font-size: 2rem;
+      margin: 1rem 0;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    .buttons button {
+      margin: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .yes {
+      background: #00c853;
+      color: #fff;
+    }
+    .yes:hover {
+      background: #00e676;
+    }
+    .no {
+      background: #d50000;
+      color: #fff;
+    }
+    .no:hover {
+      background: #ff1744;
+    }
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔥 Life Streaker</h1>
+    <div class="quote" id="quote"></div>
+    <div class="streak">Current Streak: <span id="streak">0</span> days</div>
+    <div class="buttons">
+      <button class="yes" onclick="markYes()">✅ Yes, I did it</button>
+      <button class="no" onclick="markNo()">❌ No, I broke it</button>
+    </div>
+    <footer>Built for consistency, built for me.</footer>
+  </div>
+
+  <script>
+    const quotes = [
+      "The next 4 months will shape the next 4 years of my life.",
+      "I am stronger than any urge. I control my choices.",
+      "Small progress every day leads to massive results.",
+      "Each line of code I write sharpens my future.",
+      "Discomfort now is growth later. Embrace it.",
+      "My focus is my superpower. Today, I protect it.",
+      "Gratitude resets everything. I’m lucky to have this chance.",
+      "Brick by brick, I’m building a powerful version of me.",
+      "Yesterday is data. Today is power.",
+      "Discipline is choosing what I want most over what I want now."
+    ];
+
+    const streakEl = document.getElementById("streak");
+    const quoteEl = document.getElementById("quote");
+
+    // Load from localStorage
+    let streakData = JSON.parse(localStorage.getItem("streakData")) || { lastDate: null, streak: 0 };
+
+    // Pick today's quote (based on date)
+    let today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+    let quoteIndex = new Date().getDate() % quotes.length;
+    quoteEl.innerText = `"${quotes[quoteIndex]}"`;
+
+    streakEl.innerText = streakData.streak;
+
+    // Functions for Yes/No
+    function markYes(){
+      if(streakData.lastDate === today){
+        alert("You already checked in today!");
+        return;
+      }
+      if(streakData.lastDate === getYesterday()){
+        streakData.streak += 1;
+      } else {
+        streakData.streak = 1;
+      }
+      streakData.lastDate = today;
+      saveData();
+    }
+
+    function markNo(){
+      streakData.streak = 0;
+      streakData.lastDate = today;
+      saveData();
+    }
+
+    function saveData(){
+      localStorage.setItem("streakData", JSON.stringify(streakData));
+      streakEl.innerText = streakData.streak;
+    }
+
+    function getYesterday(){
+      let d = new Date();
+      d.setDate(d.getDate() - 1);
+      return d.toISOString().split('T')[0];
+    }
+  </script>
+</body>
+</html>
